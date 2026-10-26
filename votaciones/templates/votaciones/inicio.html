@@ -1,0 +1,44 @@
+{% extends "votaciones/base.html" %}
+{% block content %}
+<main>
+  <section class="hero">
+    <div class="hero-grain"></div>
+    <div class="hero-content">
+      <p class="kicker">{% if edicion %}{{ edicion.nombre }}{% else %}Festival de la Leyenda Vallenata{% endif %}</p>
+      <h1>Tu voz también<em>hace historia</em></h1>
+      <p class="hero-description">Reconoce el talento, la tradición y la alegría que mantienen vivo nuestro folclor. Elige a tus favoritos de esta edición.</p>
+      <div class="hero-actions">
+        <a class="primary-button" href="{% if user.is_authenticated %}{% url 'categorias' %}{% else %}{% url 'login' %}{% endif %}">Comenzar a votar {% include "votaciones/_arrow.html" %}</a>
+        <span class="hero-note">Votación segura y transparente</span>
+      </div>
+    </div>
+    {% if edicion %}
+    <div class="hero-sidecopy">
+      <span>{{ edicion.lugar }}</span>
+      <strong>{% if edicion.fecha_inicio and edicion.fecha_fin %}{{ edicion.fecha_inicio|date:"d b"|upper }} — {{ edicion.fecha_fin|date:"d b"|upper }}{% else %}Próximamente{% endif %}</strong>
+      <span>{{ edicion.anio }}</span>
+    </div>
+    <div class="hero-stat">
+      <span>Tu elección cuenta</span>
+      <strong>{{ total_categorias }}</strong>
+      <p>categorías para celebrar lo nuestro</p>
+    </div>
+    {% endif %}
+    <div class="scroll-cue"><span></span>Conoce más</div>
+  </section>
+
+  <section class="intro-strip">
+    <div><span class="section-number">01</span><p class="kicker dark">El poder de elegir</p></div>
+    <h2>Una celebración elegida por quienes sienten el vallenato.</h2>
+    <p>Cada voto es una forma de preservar nuestra identidad y reconocer a quienes la transforman en música, baile y color.</p>
+  </section>
+
+  {% if ediciones.count > 1 %}
+  <section class="intro-strip">
+    <div><span class="section-number">02</span><p class="kicker dark">Ediciones</p></div>
+    <h2>Todas las ediciones registradas</h2>
+    <p>{% for e in ediciones %}<a href="{% url 'categorias_edicion' e.id %}"><strong>{{ e.anio }}</strong> · {{ e.nombre }}</a><br>{% endfor %}</p>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "votaciones/base.html" %}
+{% block title %}{{ categoria.nombre }} · Festival Vallenato{% endblock %}
+{% block content %}
+<main class="participants-page">
+  <a class="back-button" href="{% url 'categorias_edicion' categoria.edicion.id %}">← Todas las categorías</a>
+  <section class="participants-heading">
+    <div>
+      <p class="kicker dark">{{ categoria.lema }}</p>
+      <h1>Categoría: <em>{{ categoria.nombre }}</em></h1>
+    </div>
+    <div class="category-summary"><span>{{ total_opciones|stringformat:"02d" }}</span><p>participantes</p></div>
+  </section>
+
+  {% for v in votaciones %}
+    {% if votaciones|length > 1 %}<h2 class="vote-group-title">{{ v.titulo }}</h2>{% endif %}
+    <section class="participant-grid" aria-label="Participantes en {{ v.titulo }}">
+      {% for o in v.opciones.all %}
+      <article class="participant-card">
+        <div class="participant-image">
+          {% if o.imagen_url %}<img alt="{{ o.nombre }}" src="{{ o.imagen_url }}">{% endif %}
+          <span>#{{ o.numero|stringformat:"02d" }}</span>
+        </div>
+        <div class="participant-copy">
+          <p class="participant-location">{{ o.procedencia }}</p>
+          <h2>{{ o.nombre }}</h2>
+          <p>{{ o.descripcion }}</p>
+          <button class="vote-card-button pending" type="button" disabled>
+            {% if v.abierta %}Votación disponible próximamente{% else %}Votación cerrada{% endif %}
+          </button>
+        </div>
+      </article>
+      {% empty %}<p class="empty-state">Esta votación aún no tiene opciones.</p>{% endfor %}
+    </section>
+  {% empty %}
+    <p class="empty-state">Esta categoría aún no tiene votaciones.</p>
+  {% endfor %}
+</main>
+{% endblock %}

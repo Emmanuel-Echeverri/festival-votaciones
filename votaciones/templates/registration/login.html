@@ -1,0 +1,32 @@
+{% extends "votaciones/base.html" %}
+{% block title %}Iniciar sesión · Festival Vallenato{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<main class="login-page">
+  <div class="login-visual" aria-hidden="true">
+    <div class="login-quote">
+      <span class="section-number light">02</span>
+      <blockquote>“El vallenato es un idioma que se canta con el alma.”</blockquote>
+      <span class="quote-line"></span>
+      <p>Patrimonio Cultural de la Nación</p>
+    </div>
+  </div>
+  <section class="login-panel">
+    <div class="login-card">
+      <p class="kicker dark">Acceso a votaciones</p>
+      <h1>Bienvenido a la elección del festival</h1>
+      <p class="form-intro">Ingresa con tu documento de identidad y tu contraseña. Tu documento no será visible públicamente.</p>
+      <form method="post">{% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <label for="id_username">Documento de identidad</label>
+        <div class="input-wrap"><input type="text" name="username" id="id_username" inputmode="numeric" autocomplete="off" placeholder="Ej. 1065123456" required></div>
+        <label for="id_password">Contraseña</label>
+        <div class="input-wrap"><input type="password" name="password" id="id_password" required></div>
+        {% if form.errors %}<p class="form-error" role="alert">Documento o contraseña incorrectos.</p>{% endif %}
+        <button class="primary-button full" type="submit">Ingresar a votar {% include "votaciones/_arrow.html" %}</button>
+      </form>
+      <p class="alt-link">¿Aún no tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a></p>
+    </div>
+  </section>
+</main>
+{% endblock %}

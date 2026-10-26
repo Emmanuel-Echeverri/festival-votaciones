@@ -1,0 +1,30 @@
+{% extends "votaciones/base.html" %}
+{% block title %}Registro · Festival Vallenato{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<main class="login-page">
+  <div class="login-visual" aria-hidden="true">
+    <div class="login-quote">
+      <span class="section-number light">02</span>
+      <blockquote>“Cada voto es una forma de preservar nuestra identidad.”</blockquote>
+      <span class="quote-line"></span>
+      <p>Festival de la Leyenda Vallenata</p>
+    </div>
+  </div>
+  <section class="login-panel">
+    <div class="login-card">
+      <p class="kicker dark">Crear cuenta</p>
+      <h1>Regístrate para participar</h1>
+      <form method="post">{% csrf_token %}
+        {% for field in form %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          <div class="input-wrap">{{ field }}</div>
+          {% for e in field.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+        {% endfor %}
+        <button class="primary-button full" type="submit">Crear cuenta {% include "votaciones/_arrow.html" %}</button>
+      </form>
+      <p class="alt-link">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "votaciones/base.html" %}
+{% block title %}Categorías · Festival Vallenato{% endblock %}
+{% block content %}
+<main class="listing-page">
+  <section class="listing-heading">
+    <div>
+      <p class="kicker">Votación oficial {{ edicion.anio }}</p>
+      <h1>Elige una categoría</h1>
+    </div>
+    <p>Explora el talento que da vida a nuestra fiesta y vota por tus favoritos en cada categoría.</p>
+  </section>
+
+  <section class="category-grid" aria-label="Categorías participantes">
+    {% for c in categorias %}
+    <article class="category-card">
+      {% if c.imagen_url %}<img alt="Categoría {{ c.nombre }}" src="{{ c.imagen_url }}">{% endif %}
+      <div class="card-overlay"></div>
+      <span class="card-index">{{ forloop.counter|stringformat:"02d" }}</span>
+      <div class="category-copy">
+        <p>{{ c.lema }}</p>
+        <h2>{{ c.nombre }}</h2>
+        <span>{{ c.descripcion }}</span>
+        <a class="category-link" href="{% url 'participantes' c.id %}">Ver participantes {% include "votaciones/_arrow.html" %}</a>
+      </div>
+    </article>
+    {% empty %}
+    <p class="empty-state">Esta edición aún no tiene categorías. Créalas en el panel de administración.</p>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}
